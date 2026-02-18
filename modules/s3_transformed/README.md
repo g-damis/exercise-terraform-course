@@ -1,0 +1,1 @@
+Scopo di questo modulo (s3_transformed): gestire il bucket delle immagini duplicate.
