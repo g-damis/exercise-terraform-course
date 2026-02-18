@@ -43,3 +43,46 @@ variable "source_kms_key_arn" {
   type        = string
   default     = null
 }
+
+variable "transformed_enabled" {
+  description = "Se true, crea e usa il bucket transformed per salvare immagini trasformate."
+  type        = bool
+  default     = true
+}
+
+variable "transformed_created_bucket_name" {
+  description = "Override opzionale del nome bucket transformed. Se null, viene generato automaticamente."
+  type        = string
+  default     = null
+}
+
+variable "transformed_expiration_days" {
+  description = "Lifecycle: dopo quanti giorni eliminare le immagini trasformate (default 90)."
+  type        = number
+  default     = 90
+}
+
+variable "transformed_abort_incomplete_multipart_days" {
+  description = "Dopo quanti giorni abortire upload multipart incompleti nel bucket transformed."
+  type        = number
+  default     = 7
+}
+
+variable "transformed_force_destroy" {
+  description = "Se true, permette destroy del bucket transformed anche se non è vuoto (solo lab)."
+  type        = bool
+  default     = false
+}
+
+variable "transformed_enable_versioning" {
+  description = "Abilita versioning sul bucket transformed."
+  type        = bool
+  default     = false
+}
+
+variable "transformed_kms_key_arn" {
+  description = "SSE-KMS key ARN per bucket transformed. Se null usa AES256."
+  type        = string
+  default     = null
+}
+
