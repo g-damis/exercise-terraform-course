@@ -1,0 +1,1 @@
+Scopo di questo modulo (s3_source): gestire il bucket delle immagini originali.
