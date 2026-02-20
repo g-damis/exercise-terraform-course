@@ -11,9 +11,9 @@ output "role_arn" {
 }
 
 output "function_url" {
-  value = aws_lambda_function_url.this.function_url
+  value = aws_lambda_function_url.function_url.function_url
 }
 
 output "function_url_auth_type" {
-  value = aws_lambda_function_url.this.authorization_type
+  value = aws_lambda_function_url.function_url.authorization_type
 }

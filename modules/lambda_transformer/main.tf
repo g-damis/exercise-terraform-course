@@ -111,7 +111,7 @@ resource "aws_lambda_function" "this" {
 }
 
 # Function URL (origin secondario in CloudFront failover)
-resource "aws_lambda_function_url" "this" {
+resource "aws_lambda_function_url" "function_url" {
   function_name      = aws_lambda_function.this.function_name
   authorization_type = "AWS_IAM"
   invoke_mode        = var.invoke_mode
