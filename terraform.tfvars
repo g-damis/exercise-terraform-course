@@ -1,6 +1,7 @@
 aws_region   = "eu-south-1"
 aws_profile  = "corso-terraform"
 project_name = "terraform-exercise"
+environment  = "dev"
 
 # crea bucket source automaticamente:
 source_created_bucket_name = "source-bucket-tf-course"

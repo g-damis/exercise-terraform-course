@@ -27,3 +27,45 @@ perché la consegna è sempre gestita dal CDN.
 
 *In altre parole*: CloudFront continua a fare il suo lavoro (cache e distribuzione globale), ma 
 Lambda aggiunge l’intelligenza per “scegliere o creare” la variante ottimizzata, e S3 fa da storage sia per gli originali sia per le versioni generate.
+
+---
+
+## Deploy multi-ambiente con Makefile
+
+Per evitare comandi Terraform "sparsi", il progetto ora usa un workflow standard basato su `Makefile`.
+
+### Prerequisiti
+
+- `terraform` installato
+- `make` installato
+- profilo AWS configurato (es. `corso-terraform`)
+
+### Struttura ambienti
+
+I parametri per ambiente si trovano in:
+
+- `environments/dev.tfvars`
+- `environments/stage.tfvars`
+- `environments/prod.tfvars`
+
+Ogni ambiente usa anche un workspace Terraform omonimo (`dev`, `stage`, `prod`).
+
+### Comandi principali
+
+```bash
+make help
+make plan ENV=dev
+make apply ENV=dev
+make destroy ENV=dev
+```
+
+Per esecuzione non interattiva:
+
+```bash
+make apply ENV=prod AUTO_APPROVE=true
+```
+
+### Note importanti
+
+- Il naming ora include l'ambiente (`project_name-environment`), quindi le risorse risultano separate.
+- Se `source_created_bucket_name` e `transformed_created_bucket_name` sono `null`, Terraform genera nomi bucket univoci per evitare collisioni globali S3.

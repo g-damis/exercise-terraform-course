@@ -18,6 +18,16 @@ variable "project_name" {
   }
 }
 
+variable "environment" {
+  description = "Ambiente di deploy (es. dev, stage, prod)."
+  type        = string
+
+  validation {
+    condition     = can(regex("^[a-z0-9-]{2,12}$", var.environment))
+    error_message = "environment deve contenere solo minuscole, numeri o trattini (2-12 caratteri)."
+  }
+}
+
 # --- S3 source module inputs ---
 
 variable "source_created_bucket_name" {
