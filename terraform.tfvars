@@ -17,3 +17,5 @@ transformed_abort_incomplete_multipart_days = 7
 transformed_force_destroy                   = true
 transformed_enable_versioning               = false
 transformed_kms_key_arn                     = null
+
+lambda_zip_path = "./build/image-processing.zip"

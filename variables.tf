@@ -96,3 +96,39 @@ variable "transformed_kms_key_arn" {
   default     = null
 }
 
+variable "lambda_zip_path" { type = string }
+
+variable "lambda_memory_mb" {
+  type    = number
+  default = 1500
+}
+
+variable "lambda_timeout_seconds" {
+  type    = number
+  default = 60
+}
+
+variable "lambda_architecture" {
+  type    = string
+  default = "x86_64"
+  validation {
+    condition     = contains(["x86_64", "arm64"], var.lambda_architecture)
+    error_message = "lambda_architecture deve essere x86_64 oppure arm64."
+  }
+}
+
+variable "transformed_cache_control" {
+  type    = string
+  default = "max-age=31622400"
+}
+
+variable "max_image_size_bytes" {
+  type    = number
+  default = 4700000
+}
+
+variable "store_transformed_images" {
+  description = "Se true, crea/usa il bucket S3 delle immagini trasformate."
+  type        = bool
+  default     = true
+}

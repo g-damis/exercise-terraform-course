@@ -8,6 +8,7 @@ source_force_destroy       = true
 source_enable_versioning   = false
 source_kms_key_arn         = null
 
+store_transformed_images                    = true
 transformed_enabled                         = true
 transformed_created_bucket_name             = null
 transformed_expiration_days                 = 30

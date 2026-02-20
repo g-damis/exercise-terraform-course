@@ -25,3 +25,25 @@ module "s3_transformed" {
   enable_versioning               = var.transformed_enable_versioning
   kms_key_arn                     = var.transformed_kms_key_arn
 }
+
+module "lambda_transformer" {
+  source = "./modules/lambda_transformer"
+
+  name_prefix = local.name_prefix
+  common_tags = local.common_tags
+
+  lambda_zip_path = var.lambda_zip_path
+
+  memory_mb       = var.lambda_memory_mb
+  timeout_seconds = var.lambda_timeout_seconds
+  architectures   = [var.lambda_architecture]
+
+  source_bucket_name = module.s3_source.bucket_name
+  source_bucket_arn  = module.s3_source.bucket_arn
+
+  store_transformed_images    = var.store_transformed_images
+  transformed_bucket_name     = module.s3_transformed.bucket_name
+  transformed_bucket_arn      = module.s3_transformed.bucket_arn
+  transformed_image_cache_ttl = var.transformed_cache_control
+  max_image_size_bytes        = var.max_image_size_bytes
+}
