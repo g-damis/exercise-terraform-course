@@ -45,15 +45,24 @@ data "aws_iam_policy_document" "inline" {
 
   # Write transformed images (solo se abilitato)
   dynamic "statement" {
-    for_each = (var.store_transformed_images && var.transformed_bucket_arn != null) ? [1] : []
+    for_each = (var.store_transformed_images && var.transformed_bucket_arn != null && trimspace(var.transformed_bucket_arn) != "") ? [1] : []
     content {
       actions = [
         "s3:PutObject",
         "s3:AbortMultipartUpload",
-        "s3:ListBucketMultipartUploads",
         "s3:ListMultipartUploadParts"
       ]
       resources = ["${var.transformed_bucket_arn}/*"]
+    }
+  }
+
+  dynamic "statement" {
+    for_each = (var.store_transformed_images && var.transformed_bucket_arn != null && trimspace(var.transformed_bucket_arn) != "") ? [1] : []
+    content {
+      actions = [
+        "s3:ListBucketMultipartUploads"
+      ]
+      resources = [var.transformed_bucket_arn]
     }
   }
 }
@@ -82,8 +91,9 @@ resource "aws_lambda_function" "this" {
   memory_size = var.memory_mb
   timeout     = var.timeout_seconds
 
-  filename         = var.lambda_zip_path
-  source_code_hash = filebase64sha256(var.lambda_zip_path)
+  filename = var.lambda_zip_path
+  # Permette il plan anche quando lo zip non è ancora stato generato in locale.
+  source_code_hash = try(filebase64sha256(var.lambda_zip_path), null)
 
   # Env vars IDENTICHE alla repo
   environment {

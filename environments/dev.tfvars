@@ -16,3 +16,10 @@ transformed_abort_incomplete_multipart_days = 3
 transformed_force_destroy                   = true
 transformed_enable_versioning               = false
 transformed_kms_key_arn                     = null
+
+lambda_zip_path           = "./build/image-processing.zip"
+lambda_memory_mb          = 1500
+lambda_timeout_seconds    = 60
+lambda_architecture       = "x86_64"
+transformed_cache_control = "max-age=31622400"
+max_image_size_bytes      = 4700000

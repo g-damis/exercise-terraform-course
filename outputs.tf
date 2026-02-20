@@ -18,3 +18,15 @@ output "transformed_bucket_arn" {
   value = module.s3_transformed.bucket_arn
 }
 
+output "lambda_transformer_function_name" {
+  value = module.lambda_transformer.function_name
+}
+
+output "lambda_transformer_function_arn" {
+  value = module.lambda_transformer.function_arn
+}
+
+output "lambda_transformer_function_url" {
+  value = module.lambda_transformer.function_url
+}
+
