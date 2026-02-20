@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "assume" {
   }
 }
 
-resource "aws_iam_role" "this" {
+resource "aws_iam_role" "lambda_execution_role" {
   name               = "${local.function_name}-role"
   assume_role_policy = data.aws_iam_policy_document.assume.json
   tags               = local.tags
@@ -67,22 +67,22 @@ data "aws_iam_policy_document" "inline" {
   }
 }
 
-resource "aws_iam_role_policy" "this" {
+resource "aws_iam_role_policy" "lambda_inline_policy" {
   name   = "${local.function_name}-inline"
-  role   = aws_iam_role.this.id
+  role   = aws_iam_role.lambda_execution_role.id
   policy = data.aws_iam_policy_document.inline.json
 }
 
 # Controllo retention logs
-resource "aws_cloudwatch_log_group" "this" {
+resource "aws_cloudwatch_log_group" "lambda_log_group" {
   name              = "/aws/lambda/${local.function_name}"
   retention_in_days = var.log_retention_days
   tags              = local.tags
 }
 
-resource "aws_lambda_function" "this" {
+resource "aws_lambda_function" "image_processor" {
   function_name = local.function_name
-  role          = aws_iam_role.this.arn
+  role          = aws_iam_role.lambda_execution_role.arn
 
   runtime       = var.runtime
   handler       = var.handler
@@ -107,12 +107,12 @@ resource "aws_lambda_function" "this" {
 
   tags = local.tags
 
-  depends_on = [aws_cloudwatch_log_group.this]
+  depends_on = [aws_cloudwatch_log_group.lambda_log_group]
 }
 
 # Function URL (origin secondario in CloudFront failover)
 resource "aws_lambda_function_url" "function_url" {
-  function_name      = aws_lambda_function.this.function_name
-  authorization_type = "AWS_IAM"
+  function_name      = aws_lambda_function.image_processor.function_name
+  authorization_type = "NONE" # Per debug iniziale poi aggiungo AWS_IAM così non la rendo pubblica
   invoke_mode        = var.invoke_mode
 }

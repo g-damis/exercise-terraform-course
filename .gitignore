@@ -5,3 +5,10 @@
 crash.log
 crash.*.log
 .terraform.lock.hcl
+
+# Build artifacts
+build/*.zip
+
+# Node dependencies
+node_modules/
+functions/**/node_modules/
