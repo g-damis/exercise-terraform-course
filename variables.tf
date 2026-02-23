@@ -132,3 +132,18 @@ variable "store_transformed_images" {
   type        = bool
   default     = true
 }
+
+variable "price_class" {
+  type    = string
+  default = "PriceClass_100"
+}
+
+variable "enable_origin_shield" {
+  type    = bool
+  default = true
+}
+
+variable "origin_shield_region" {
+  type    = string
+  default = null
+}

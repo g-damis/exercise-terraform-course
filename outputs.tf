@@ -30,3 +30,6 @@ output "lambda_transformer_function_url" {
   value = module.lambda_transformer.function_url
 }
 
+output "cloudfront_domain_name" {
+  value = module.cloudfront_delivery.domain_name
+}

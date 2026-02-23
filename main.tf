@@ -47,3 +47,25 @@ module "lambda_transformer" {
   transformed_image_cache_ttl = var.transformed_cache_control
   max_image_size_bytes        = var.max_image_size_bytes
 }
+
+module "cloudfront_delivery" {
+  source = "./modules/cloudfront_delivery"
+
+  name_prefix = local.name_prefix
+  common_tags = local.common_tags
+
+  price_class = var.price_class
+
+  store_transformed_images                = var.store_transformed_images
+  transformed_bucket_name                 = module.s3_transformed.bucket_name
+  transformed_bucket_arn                  = module.s3_transformed.bucket_arn
+  transformed_bucket_regional_domain_name = module.s3_transformed.bucket_regional_domain_name
+
+  lambda_function_url  = module.lambda_transformer.function_url
+  lambda_function_name = module.lambda_transformer.function_name
+
+  enable_origin_shield = var.enable_origin_shield
+  origin_shield_region = var.origin_shield_region
+
+  failover_status_codes = [403]
+}
