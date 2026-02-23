@@ -5,6 +5,16 @@ PLAN_DIR := .terraform/plans
 PLAN_FILE := $(PLAN_DIR)/$(ENV).tfplan
 AUTO_APPROVE ?= false
 
+ifeq ($(OS),Windows_NT)
+NULL_REDIRECT := >NUL 2>&1
+CHECK_TFVARS_CMD := if not exist "$(TFVARS_FILE)" (echo Missing file: $(TFVARS_FILE) & exit /b 1)
+MKDIR_PLAN_CMD := if not exist "$(PLAN_DIR)" mkdir "$(PLAN_DIR)"
+else
+NULL_REDIRECT := >/dev/null 2>&1
+CHECK_TFVARS_CMD := test -f "$(TFVARS_FILE)" || (echo "Missing file: $(TFVARS_FILE)" && exit 1)
+MKDIR_PLAN_CMD := mkdir -p "$(PLAN_DIR)"
+endif
+
 ifeq ($(AUTO_APPROVE),true)
 AUTO_APPROVE_FLAG := -auto-approve
 else
@@ -29,13 +39,13 @@ help:
 	@echo "  output     - show terraform outputs for selected workspace"
 
 check-env:
-	@test -f "$(TFVARS_FILE)" || (echo "Missing file: $(TFVARS_FILE)" && exit 1)
+	@$(CHECK_TFVARS_CMD)
 
 init:
 	$(TF) init
 
 workspace: init
-	@$(TF) workspace select "$(ENV)" > /dev/null 2>&1 || $(TF) workspace new "$(ENV)"
+	@$(TF) workspace select "$(ENV)" $(NULL_REDIRECT) || $(TF) workspace new "$(ENV)"
 
 fmt:
 	$(TF) fmt -recursive
@@ -44,7 +54,7 @@ validate: init
 	$(TF) validate
 
 plan: check-env workspace
-	@mkdir -p "$(PLAN_DIR)"
+	@$(MKDIR_PLAN_CMD)
 	$(TF) plan -var-file="$(TFVARS_FILE)" -out="$(PLAN_FILE)"
 
 apply: check-env workspace

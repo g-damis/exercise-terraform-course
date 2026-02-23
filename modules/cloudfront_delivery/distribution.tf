@@ -5,7 +5,7 @@ locals {
   })
 
   # Lambda Function URL domain senza https:// e senza trailing slash
-  lambda_domain = trimsuffix(regexreplace(var.lambda_function_url, "^https://", ""), "/")
+  lambda_domain = trimsuffix(trimprefix(var.lambda_function_url, "https://"), "/")
 
   s3_origin_id     = "s3-transformed"
   lambda_origin_id = "lambda-fallback"
