@@ -19,8 +19,6 @@ resource "aws_cloudfront_origin_access_control" "s3" {
   signing_protocol                  = "sigv4"
 }
 
-# NOTA: la traccia parla di OAC anche per Lambda URL (SigV4).
-# Se il provider dovesse rifiutare origin_type="lambda", dimmelo: si gestisce con workaround.
 resource "aws_cloudfront_origin_access_control" "lambda" {
   name                              = "${var.name_prefix}-oac-lambda"
   origin_access_control_origin_type = "lambda"
