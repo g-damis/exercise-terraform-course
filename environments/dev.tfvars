@@ -16,6 +16,7 @@ transformed_abort_incomplete_multipart_days = 3
 transformed_force_destroy                   = true
 transformed_enable_versioning               = false
 transformed_kms_key_arn                     = null
+origin_shield_region                        = "eu-south-1"
 
 lambda_zip_path           = "./build/image-processing.zip"
 lambda_memory_mb          = 1500
