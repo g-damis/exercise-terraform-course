@@ -113,6 +113,6 @@ resource "aws_lambda_function" "image_processor" {
 # Function URL (origin secondario in CloudFront failover)
 resource "aws_lambda_function_url" "function_url" {
   function_name      = aws_lambda_function.image_processor.function_name
-  authorization_type = "NONE" # Per debug iniziale poi aggiungo AWS_IAM così non la rendo pubblica
+  authorization_type = "AWS_IAM" # Per debug iniziale poi aggiungo AWS_IAM così non la rendo pubblica
   invoke_mode        = var.invoke_mode
 }

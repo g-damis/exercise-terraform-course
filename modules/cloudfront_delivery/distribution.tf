@@ -7,9 +7,9 @@ locals {
   # Lambda Function URL domain senza https:// e senza trailing slash
   lambda_domain = trimsuffix(trimprefix(var.lambda_function_url, "https://"), "/")
 
-  s3_origin_id                    = "s3-transformed"
-  lambda_origin_id                = "lambda-fallback"
-  origin_group_id                 = "origin-group-transformed"
+  s3_origin_id     = "s3-transformed"
+  lambda_origin_id = "lambda-fallback"
+  origin_group_id  = "origin-group-transformed"
 }
 
 resource "aws_cloudfront_origin_access_control" "s3" {
