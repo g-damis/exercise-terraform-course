@@ -34,3 +34,12 @@ resource "aws_lambda_permission" "allow_cloudfront_invoke_function_url" {
   source_arn             = aws_cloudfront_distribution.this.arn
   function_url_auth_type = "AWS_IAM"
 }
+
+resource "aws_lambda_permission" "allow_cloudfront_invoke_function" {
+  statement_id             = "AllowCloudFrontInvokeFunction"
+  action                   = "lambda:InvokeFunction"
+  function_name            = var.lambda_function_name
+  principal                = "cloudfront.amazonaws.com"
+  source_arn               = aws_cloudfront_distribution.this.arn
+  invoked_via_function_url = true
+}
